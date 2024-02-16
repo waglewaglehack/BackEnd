@@ -13,7 +13,7 @@ public class GoogleProviderState implements ProviderState {
 
     @Override
     public boolean canSupport(String provider) {
-        return provider.equals(GOOGLE);
+        return provider.equalsIgnoreCase(GOOGLE);
     }
 
     @Override

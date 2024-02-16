@@ -41,7 +41,8 @@ public class PrincipalsOauth2UserService extends DefaultOAuth2UserService {
         log.info("provider={}", provider);
         OAuth2UserInfo userInfo = userInfoFactory.getOAuthUserInfo(provider, attributes);
 
-        Optional<Member> findUser = memberRepository.findByEmail(userInfo.getEmail());
+        // 회원 가입 유무
+        Optional<Member> findUser = memberRepository.findByProviderId(userInfo.getEmail());
 
         if (findUser.isEmpty()) {
             Member newMember = new Member(userInfo.getEmail(), null, MemberRole.ROLE_USER);

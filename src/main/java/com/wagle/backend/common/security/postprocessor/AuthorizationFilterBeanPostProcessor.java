@@ -21,5 +21,4 @@ public class AuthorizationFilterBeanPostProcessor implements BeanPostProcessor {
         }
         return bean;
     }
-
 }

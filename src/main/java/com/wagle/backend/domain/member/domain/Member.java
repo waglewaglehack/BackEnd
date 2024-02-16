@@ -2,14 +2,8 @@ package com.wagle.backend.domain.member.domain;
 
 import com.wagle.backend.domain.base.BaseTimeEntity;
 import com.wagle.backend.domain.member.exception.CannotChangePasswordException;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -18,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Setter(value = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Slf4j
+@AllArgsConstructor
+@Builder
 public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue
@@ -31,7 +27,8 @@ public class Member extends BaseTimeEntity {
     private String refreshToken;
     private String provider;
     private String providerId;
-
+    private String emoji = "\\u{1f601}";
+    @Enumerated(value = EnumType.STRING)
     private MemberRole memberRole;
 
     public Member(String email, Integer age, MemberRole memberRole) {
@@ -74,5 +71,12 @@ public class Member extends BaseTimeEntity {
     public void addProviderAndId(String provider, String providerId) {
         setProvider(provider);
         setProviderId(providerId);
+    }
+
+    public static Member createAnonymous() {
+        return Member.builder()
+                .emoji("\\u{1f601}")
+                .nickname("탈퇴한 사용자")
+                .build();
     }
 }

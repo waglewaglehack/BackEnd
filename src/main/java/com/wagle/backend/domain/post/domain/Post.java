@@ -5,13 +5,10 @@ import com.wagle.backend.domain.member.domain.Member;
 import com.wagle.backend.domain.post.dto.PostCreateDto;
 import com.wagle.backend.domain.post.dto.PostUpdateDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
 @Entity

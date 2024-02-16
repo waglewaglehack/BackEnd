@@ -26,7 +26,8 @@ public class MemberController {
      * @param memberSignUpDto
      * @exception RuntimeException 회원 가입에 실패했을 시
      */
-    @PostMapping("/sign-up")
+//    @PostMapping("/sign-up")
+    @Deprecated
     public ResponseEntity signUp(@RequestBody MemberSignUpDto memberSignUpDto) {
         memberService.signUp(memberSignUpDto);
         return new ResponseEntity<>(HttpStatus.CREATED);

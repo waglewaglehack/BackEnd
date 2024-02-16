@@ -1,22 +1,20 @@
 package com.wagle.backend.common.security.auth.oauth.userinfo;
 
-
 import java.util.Map;
 
-public class GoogleOAuthUserInfo implements OAuth2UserInfo {
+public class KakaoOAuthUserInfo implements OAuth2UserInfo{
     String providerId;
     String provider;
     String username;
     String email;
 
-    public GoogleOAuthUserInfo(Map<String, Object> attr) {
-        this.providerId = (String) attr.get("sub");
-        this.email = (String) attr.get("email");
-        this.provider = "GOOGLE";
-        // TODO 유저 이름 어떻게 할지
-        this.username = this.provider + "_" + this.providerId;
+    public KakaoOAuthUserInfo(Map<String, Object> attr) {
+        this.providerId = (String) attr.get("id");
+//        this.email = (String) attr.get("email"); // 현재 이메일을 받을 수 없는 상태
+        this.email = null;
+        this.provider = "KAKAO";
+        this.username = (String) attr.get("nickname");
     }
-
     @Override
     public String getProviderId() {
         return this.providerId;
