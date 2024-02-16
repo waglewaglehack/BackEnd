@@ -2,7 +2,15 @@ package com.wagle.backend.domain.post.domain;
 
 import com.wagle.backend.domain.member.domain.Member;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 @Entity
 public class Post {
     @Id
