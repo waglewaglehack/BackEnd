@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class CourseLikeService {
@@ -19,5 +21,11 @@ public class CourseLikeService {
             courseLike = CourseLike.ofCourseLike(memberId, courseId);
             courseLikeRepository.save(courseLike);
         }
+    }
+
+    @Transactional(readOnly = true)
+    public int getLikeCount(Long courseId) {
+        List<CourseLike> courseLike = courseLikeRepository.findByCourseId(courseId);
+        return courseLike.size();
     }
 }
