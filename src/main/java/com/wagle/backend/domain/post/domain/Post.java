@@ -14,7 +14,7 @@ import lombok.*;
 @Entity
 public class Post extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue()
     private Long id;
     private Long memberId;
     private String name;
