@@ -1,15 +1,18 @@
 package com.wagle.backend.domain.course.service;
 
 import com.wagle.backend.domain.course.domain.Course;
+import com.wagle.backend.domain.course.domain.CourseLike;
 import com.wagle.backend.domain.course.domain.CoursePost;
 import com.wagle.backend.domain.course.dto.CourseRequestDto;
 import com.wagle.backend.domain.course.dto.CourseResponseDto;
 import com.wagle.backend.domain.course.dto.CourseUpdateRequestDto;
 import com.wagle.backend.domain.course.exception.CourseErrorCode;
 import com.wagle.backend.domain.course.exception.CourseException;
+import com.wagle.backend.domain.course.repository.CourseLikeRepository;
 import com.wagle.backend.domain.course.repository.CoursePostRepository;
 import com.wagle.backend.domain.course.repository.CourseRepository;
 import com.wagle.backend.domain.member.repository.MemberRepository;
+import com.wagle.backend.domain.post.domain.PostLike;
 import com.wagle.backend.domain.post.dto.PostCourseResponseDto;
 import com.wagle.backend.domain.post.dto.PostResponseDto;
 import com.wagle.backend.domain.post.repository.PostRepository;
@@ -17,11 +20,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class CourseService {
     private final CourseRepository courseRepository;
@@ -52,6 +57,12 @@ public class CourseService {
                         .collect(Collectors.toList()))
                 .build();
     }
+
+    public Page<Course> searchCourse(String keyword, Pageable pageable) {
+        return courseRepository.findByNameContainingIgnoreCase(keyword, pageable);
+    }
+
+    @Transactional
     public void saveCourse(CourseRequestDto requestDto) {
         Course course = Course.builder()
                 .name(requestDto.name())
@@ -69,10 +80,7 @@ public class CourseService {
         coursePostRepository.save(coursePost);
     }
 
-    public Page<Course> searchCourse(String keyword, Pageable pageable) {
-        return courseRepository.findByNameContainingIgnoreCase(keyword, pageable);
-    }
-
+    @Transactional
     public void updateCourse(Long id, CourseUpdateRequestDto requestDto) {
         Optional<Course> course = courseRepository.findById(id);
         if (course.isEmpty()) {
@@ -81,6 +89,7 @@ public class CourseService {
         course.get().updateCourse(requestDto.name(), requestDto.content());
     }
 
+    @Transactional
     public void deleteCourse(Long id) {
         courseRepository.deleteById(id);
         coursePostRepository.deleteByCourseId(id);
