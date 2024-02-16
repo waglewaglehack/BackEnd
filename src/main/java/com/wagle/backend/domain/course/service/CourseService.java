@@ -7,6 +7,7 @@ import com.wagle.backend.domain.course.dto.CourseResponseDto;
 import com.wagle.backend.domain.course.dto.CourseUpdateRequestDto;
 import com.wagle.backend.domain.course.exception.CourseErrorCode;
 import com.wagle.backend.domain.course.exception.CourseException;
+import com.wagle.backend.domain.course.repository.CourseLikeRepository;
 import com.wagle.backend.domain.course.repository.CoursePostRepository;
 import com.wagle.backend.domain.course.repository.CourseRepository;
 import com.wagle.backend.domain.member.repository.MemberRepository;
@@ -30,6 +31,7 @@ public class CourseService {
     private final CoursePostRepository coursePostRepository;
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
+    private final CourseLikeRepository courseLikeRepository;
 
     public CourseResponseDto getCourse(Long id) {
         Optional<Course> course = courseRepository.findById(id);
@@ -52,11 +54,29 @@ public class CourseService {
                             return new PostCourseResponseDto(post, nickName);
                         })
                         .collect(Collectors.toList()))
+                .likeCount(courseLikeRepository.countAllByCourseId(id))
                 .build();
     }
 
-    public Page<Course> searchCourse(String keyword, Pageable pageable) {
-        return courseRepository.findByNameContainingIgnoreCase(keyword, pageable);
+    public Page<CourseResponseDto> searchCourse(String keyword, Pageable pageable) {
+        Page<Course> courses = courseRepository.findByNameContainingIgnoreCase(keyword, pageable);
+        return courses.map(course -> CourseResponseDto.builder()
+                .courseId(course.getId())
+                .memberId(course.getMemberId())
+                .name(course.getName())
+                .content(course.getContent())
+                .postCourseResponseDtoList(coursePostRepository.findAllByCourseId(course.getId()).stream()
+                        .map(CoursePost::getPostId)
+                        .map(postRepository::findById)
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .map(post -> {
+                            String nickName = memberRepository.findNicknameById(post.getMemberId());
+                            return new PostCourseResponseDto(post, nickName);
+                        })
+                        .collect(Collectors.toList()))
+                .likeCount(courseLikeRepository.countAllByCourseId(course.getId()))
+                .build());
     }
 
     @Transactional
