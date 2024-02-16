@@ -45,13 +45,9 @@ public class CourseController {
 
     @GetMapping("/search")
     public Page<Course> searchCourse(@RequestParam("keyword") String keyword, Pageable pageable) {
-        if (keyword == null || keyword.equals("")) {
-
-        }
         return courseService.searchCourse(keyword, pageable);
     }
 
-    //121
     @PostMapping()
     public void createCourse(@RequestBody CourseRequestDto requestDto) {
         courseService.saveCourse(requestDto);
