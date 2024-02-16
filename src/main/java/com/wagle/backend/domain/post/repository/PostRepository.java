@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    Optional<Post> findByIdAndUserId(Long postId, Long memberId); // 권한
+    Optional<Post> findByIdAndMemberId(Long postId, Long memberId); // 권한
 
-    List<Post> findAll(Pageable pageable);
+//    List<Post> findAll(Pageable pageable);
 }

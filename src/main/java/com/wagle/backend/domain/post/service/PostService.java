@@ -47,9 +47,9 @@ public class PostService {
      * @param pageable
      * @return
      */
-    public List<Post> findAll(Pageable pageable) {
-        return postRepository.findAll(pageable);
-    }
+//    public List<Post> findAll(Pageable pageable) {
+//        return postRepository.findAll(pageable);
+//    }
 
     /**
      * [포스트 수정]
@@ -58,7 +58,7 @@ public class PostService {
      */
     @Transactional
     public boolean update(PostUpdateDto postUpdateDto) {
-        Post post = postRepository.findByIdAndUserId(postUpdateDto.getPostId(), postUpdateDto.getMemberId())
+        Post post = postRepository.findByIdAndMemberId(postUpdateDto.getPostId(), postUpdateDto.getMemberId())
                 .orElseThrow(NoSuchElementException::new);
         post.update(postUpdateDto);
         postRepository.save(post);
