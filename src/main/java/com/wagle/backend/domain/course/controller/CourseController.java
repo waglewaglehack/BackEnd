@@ -44,8 +44,8 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getCourse(courseId));
     }
 
-    @GetMapping("/{user_id}")
-    public List<CourseStartRequestDto> getUserCourse(@PathVariable(value = "user_id") Long userId) {
+    @GetMapping()
+    public List<CourseStartRequestDto> getUserCourse(@RequestParam("user_id") Long userId) {
         return courseService.getUserCourse(userId);
     }
 
