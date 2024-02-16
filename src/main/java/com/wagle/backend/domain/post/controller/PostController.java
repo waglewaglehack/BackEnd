@@ -45,9 +45,10 @@ public class PostController {
      */
     @GetMapping("/{postId}/my")
     public ResponseEntity<SuccessResponse> findPostsByMemberId(
-            @AuthenticationPrincipal(expression = "member") Member member,
+
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        Member member = Member.dummy();
         PageRequest pageRequest = PageRequest.of(page, size);
         PostsResponseDto postsResponseDto = postService.findByMemberId(pageRequest, member.getId());
         return new ResponseEntity<>(SuccessResponse.of(postsResponseDto), HttpStatus.OK);
@@ -61,8 +62,9 @@ public class PostController {
      * @return
      */
     @PutMapping("/{postId}")
-    public ResponseEntity<SuccessResponse> update(@AuthenticationPrincipal(expression = "member") Member member,
-                                                  @RequestBody PostUpdateDto postUpdateDto) {
+    public ResponseEntity<SuccessResponse> update(
+            @RequestBody PostUpdateDto postUpdateDto) {
+        Member member = Member.dummy();
         postUpdateDto.setMemberId(member.getId());
         return new ResponseEntity<>(SuccessResponse.of(postService.update(postUpdateDto)), HttpStatus.OK);
     }
@@ -75,8 +77,9 @@ public class PostController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<SuccessResponse> save(@AuthenticationPrincipal(expression = "member") Member member,
-                                                @RequestBody PostCreateDto postCreateDto) {
+    public ResponseEntity<SuccessResponse> save(
+            @RequestBody PostCreateDto postCreateDto) {
+        Member member = Member.dummy();
         postCreateDto.setMemberId(member.getId());
         return new ResponseEntity<>(SuccessResponse.of(postService.addPost(postCreateDto)), HttpStatus.OK);
     }
@@ -106,8 +109,9 @@ public class PostController {
      * @return
      */
     @PostMapping("/like")
-    public ResponseEntity<SuccessResponse> likePost(@AuthenticationPrincipal(expression = "member") Member member,
-                                                    @RequestParam("post_id") Long postId) {
+    public ResponseEntity<SuccessResponse> likePost(
+            @RequestParam("post_id") Long postId) {
+        Member member = Member.dummy();
         return new ResponseEntity<>(SuccessResponse.of(postLikeService.likePost(member.getId(), postId)), HttpStatus.OK);
     }
 
@@ -120,9 +124,10 @@ public class PostController {
      * @return
      */
     @PostMapping("/{postId}/comment")
-    public ResponseEntity<SuccessResponse> addComment(@AuthenticationPrincipal(expression = "member") Member member,
-                                                      @PathVariable(value = "postId") Long postId,
-                                                      @RequestBody PostCommentCreateDto postCommentCreateDto) {
+    public ResponseEntity<SuccessResponse> addComment(
+            @PathVariable(value = "postId") Long postId,
+            @RequestBody PostCommentCreateDto postCommentCreateDto) {
+        Member member = Member.dummy();
         postCommentCreateDto.setMemberId(member.getId());
         return new ResponseEntity<>(SuccessResponse.of(postCommentService.addComment(postCommentCreateDto)), HttpStatus.OK);
     }

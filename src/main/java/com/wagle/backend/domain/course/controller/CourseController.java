@@ -8,6 +8,7 @@ import com.wagle.backend.domain.course.service.CourseLikeService;
 import com.wagle.backend.domain.course.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +44,15 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getCourse(courseId));
     }
 
+    @GetMapping("/all")
+    public List<CourseStartRequestDto> getAllCourse() {
+        return courseService.getStartAllCourse();
+    }
+
     @GetMapping("/search")
-    public Page<CourseResponseDto> searchCourse(@RequestParam("keyword") String keyword, Pageable pageable) {
+    public Page<CourseResponseDto> searchCourse(@RequestParam("keyword") String keyword, @RequestParam(value = "page") Integer page,
+                                     @RequestParam(value = "size") Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
         return courseService.searchCourse(keyword, pageable);
     }
 
