@@ -66,6 +66,16 @@ public class SwaggerConfig {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi rankApiGroup() {
+        String[] packagesToScan = {"com.wagle.backend.domain.rank.controller"};
+
+        return GroupedOpenApi.builder()
+                .group("랭킹")
+                .packagesToScan(packagesToScan)
+                .build();
+    }
+
     private SecurityScheme securityScheme() {
         return new SecurityScheme()
                 .type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
