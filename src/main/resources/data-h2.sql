@@ -1,0 +1,1 @@
+insert into member(member_id, emoji, nickname) values(1, '\\u{1f601}', 'dummy');
