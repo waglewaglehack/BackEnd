@@ -11,6 +11,8 @@ import com.wagle.backend.common.security.service.LoginService;
 import com.wagle.backend.common.security.service.WhiteList;
 import com.wagle.backend.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +31,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityConfig {
 
     private final LoginService loginService;
@@ -40,8 +43,12 @@ public class SecurityConfig {
     private final DefaultOAuth2UserService defaultOAuth2UserService;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
+    @Value("${spring.security.oauth2.client.registration.kakao.client_id}")
+    private String clientId;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        log.info("clientId={}", clientId);
         http.formLogin(AbstractHttpConfigurer::disable)
         .httpBasic(AbstractHttpConfigurer::disable)
         .csrf(AbstractHttpConfigurer::disable)
