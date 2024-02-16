@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class CourseCommentService {
-    private final CourseCommentRepository courseCommentRepository;
-    private final MemberRepository memberRepository;
+    private CourseCommentRepository courseCommentRepository;
+    private MemberRepository memberRepository;
 
     @Transactional
     public void addCourseComment(Long id, CourseCommentRequestDto courseCommentRequestDto) {

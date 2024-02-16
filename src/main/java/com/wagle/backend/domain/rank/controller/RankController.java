@@ -27,8 +27,7 @@ public class RankController {
 
     // 내 코스 랭킹
     @GetMapping("/my")
-    public ResponseEntity<SuccessResponse> myCourseRank() {
-        Member member = Member.dummy();
+    public ResponseEntity<SuccessResponse> myCourseRank(@AuthenticationPrincipal(expression = "member") Member member) {
         return new ResponseEntity<>(SuccessResponse.of(rankService.myCourseRankSearch(member)), HttpStatus.OK);
 
     }

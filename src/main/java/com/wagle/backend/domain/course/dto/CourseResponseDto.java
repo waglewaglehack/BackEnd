@@ -8,5 +8,5 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record CourseResponseDto(Long courseId, Long memberId, String name, String content, List<PostCourseResponseDto> postCourseResponseDtoList, Integer like) {
+public record CourseResponseDto(Long courseId, Long memberId, String name, String content, List<PostCourseResponseDto> postCourseResponseDtoList, Integer likeCount) {
 }

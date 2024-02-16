@@ -21,7 +21,7 @@ public class MemberController {
      * [회원 가입]
      *
      * @param memberSignUpDto
-     * @throws RuntimeException 회원 가입에 실패했을 시
+     * @exception RuntimeException 회원 가입에 실패했을 시
      */
 //    @PostMapping("/sign-up")
     @Deprecated
@@ -31,16 +31,14 @@ public class MemberController {
     }
 
     @PutMapping("/nickname")
-    public ResponseEntity<SuccessResponse> changeNickname(
-            @RequestBody MemberNicknameDTO dto) {
-        Member member = Member.dummy();
+    public ResponseEntity<SuccessResponse> changeNickname(@AuthenticationPrincipal(expression = "member") Member member,
+                                                          @RequestBody MemberNicknameDTO dto) {
         dto.setMemberId(member.getId());
         return new ResponseEntity<>(SuccessResponse.of(memberService.changeNickname(dto)), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<SuccessResponse> findUserDetails() {
-        Member member = Member.dummy();
+    public ResponseEntity<SuccessResponse> findUserDetails(@AuthenticationPrincipal(expression = "member") Member member) {
         return new ResponseEntity<>(SuccessResponse.of(memberService.findById(member.getId())), HttpStatus.OK);
     }
 

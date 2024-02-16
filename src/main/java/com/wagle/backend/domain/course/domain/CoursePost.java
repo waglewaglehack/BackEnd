@@ -16,6 +16,8 @@ public class CoursePost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Long courseId;
+
     private Long postId;
 }
