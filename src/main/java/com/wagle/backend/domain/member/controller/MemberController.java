@@ -33,12 +33,18 @@ public class MemberController {
     @PutMapping("/nickname")
     public ResponseEntity<SuccessResponse> changeNickname(@AuthenticationPrincipal(expression = "member") Member member,
                                                           @RequestBody MemberNicknameDTO dto) {
+        if (member == null) {
+            member = Member.dummy();
+        }
         dto.setMemberId(member.getId());
         return new ResponseEntity<>(SuccessResponse.of(memberService.changeNickname(dto)), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<SuccessResponse> findUserDetails(@AuthenticationPrincipal(expression = "member") Member member) {
+        if (member == null) {
+            member = Member.dummy();
+        }
         return new ResponseEntity<>(SuccessResponse.of(memberService.findById(member.getId())), HttpStatus.OK);
     }
 

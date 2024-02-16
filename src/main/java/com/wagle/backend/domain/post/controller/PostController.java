@@ -48,6 +48,9 @@ public class PostController {
             @AuthenticationPrincipal(expression = "member") Member member,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        if (member == null) {
+            member = Member.dummy();
+        }
         PageRequest pageRequest = PageRequest.of(page, size);
         PostsResponseDto postsResponseDto = postService.findByMemberId(pageRequest, member.getId());
         return new ResponseEntity<>(SuccessResponse.of(postsResponseDto), HttpStatus.OK);
@@ -63,6 +66,9 @@ public class PostController {
     @PutMapping("/{postId}")
     public ResponseEntity<SuccessResponse> update(@AuthenticationPrincipal(expression = "member") Member member,
                                                   @RequestBody PostUpdateDto postUpdateDto) {
+        if (member == null) {
+            member = Member.dummy();
+        }
         postUpdateDto.setMemberId(member.getId());
         return new ResponseEntity<>(SuccessResponse.of(postService.update(postUpdateDto)), HttpStatus.OK);
     }
@@ -77,6 +83,9 @@ public class PostController {
     @PostMapping
     public ResponseEntity<SuccessResponse> save(@AuthenticationPrincipal(expression = "member") Member member,
                                                 @RequestBody PostCreateDto postCreateDto) {
+        if (member == null) {
+            member = Member.dummy();
+        }
         postCreateDto.setMemberId(member.getId());
         return new ResponseEntity<>(SuccessResponse.of(postService.addPost(postCreateDto)), HttpStatus.OK);
     }
@@ -108,6 +117,9 @@ public class PostController {
     @PostMapping("/like")
     public ResponseEntity<SuccessResponse> likePost(@AuthenticationPrincipal(expression = "member") Member member,
                                                     @RequestParam("post_id") Long postId) {
+        if (member == null) {
+            member = Member.dummy();
+        }
         return new ResponseEntity<>(SuccessResponse.of(postLikeService.likePost(member.getId(), postId)), HttpStatus.OK);
     }
 
@@ -123,6 +135,9 @@ public class PostController {
     public ResponseEntity<SuccessResponse> addComment(@AuthenticationPrincipal(expression = "member") Member member,
                                                       @PathVariable(value = "postId") Long postId,
                                                       @RequestBody PostCommentCreateDto postCommentCreateDto) {
+        if (member == null) {
+            member = Member.dummy();
+        }
         postCommentCreateDto.setMemberId(member.getId());
         return new ResponseEntity<>(SuccessResponse.of(postCommentService.addComment(postCommentCreateDto)), HttpStatus.OK);
     }

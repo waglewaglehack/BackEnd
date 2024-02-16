@@ -79,4 +79,12 @@ public class Member extends BaseTimeEntity {
                 .nickname("탈퇴한 사용자")
                 .build();
     }
+
+    public static Member dummy() {
+        return Member.builder()
+                .emoji("\\u{1f601}")
+                .id(1L)
+                .nickname("dummy")
+                .build();
+    }
 }
