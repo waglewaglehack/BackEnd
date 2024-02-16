@@ -68,6 +68,15 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
+    public List<CourseStartRequestDto> getUserCourse(Long userId) {
+        return courseRepository.findAllByMemberId(userId).stream()
+                .map(c -> {
+                    Integer likeCount = courseLikeRepository.countAllByCourseId(c.getId());
+                    return new CourseStartRequestDto(c, likeCount);
+                })
+                .collect(Collectors.toList());
+    }
+
     public Page<CourseResponseDto> searchCourse(String keyword, Pageable pageable) {
         Page<Course> courses = courseRepository.findByNameContainingIgnoreCase(keyword, pageable);
         return courses.map(course -> CourseResponseDto.builder()
