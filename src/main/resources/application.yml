@@ -38,8 +38,8 @@ spring:
               - email
               - profile
           kakao:
-            client-id: 5894907e3e9c21225bf490ad7fa20636
-            client-secret: 9sPNRL1tYbaqABAB4GO6hvYPsGOxBTRf
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
             scope: profile_nickname
             client-name: Kakao
             authorization-grant-type: authorization_code
