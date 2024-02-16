@@ -46,6 +46,26 @@ public class SwaggerConfig {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi postApiGroup() {
+        String[] packagesToScan = {"com.wagle.backend.domain.post.controller"};
+
+        return GroupedOpenApi.builder()
+                .group("포스트")
+                .packagesToScan(packagesToScan)
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi courseApiGroup() {
+        String[] packagesToScan = {"com.wagle.backend.domain.course.controller"};
+
+        return GroupedOpenApi.builder()
+                .group("코스")
+                .packagesToScan(packagesToScan)
+                .build();
+    }
+
     private SecurityScheme securityScheme() {
         return new SecurityScheme()
                 .type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
