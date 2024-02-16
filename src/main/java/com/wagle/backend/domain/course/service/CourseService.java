@@ -58,8 +58,25 @@ public class CourseService {
                 .build();
     }
 
-    public Page<Course> searchCourse(String keyword, Pageable pageable) {
-        return courseRepository.findByNameContainingIgnoreCase(keyword, pageable);
+    public Page<CourseResponseDto> searchCourse(String keyword, Pageable pageable) {
+        Page<Course> courses = courseRepository.findByNameContainingIgnoreCase(keyword, pageable);
+        return courses.map(course -> CourseResponseDto.builder()
+                .courseId(course.getId())
+                .memberId(course.getMemberId())
+                .name(course.getName())
+                .content(course.getContent())
+                .postCourseResponseDtoList(coursePostRepository.findAllByCourseId(course.getId()).stream()
+                        .map(CoursePost::getPostId)
+                        .map(postRepository::findById)
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .map(post -> {
+                            String nickName = memberRepository.findNicknameById(post.getMemberId());
+                            return new PostCourseResponseDto(post, nickName);
+                        })
+                        .collect(Collectors.toList()))
+                .likeCount(courseLikeRepository.countAllByCourseId(course.getId()))
+                .build());
     }
 
     @Transactional

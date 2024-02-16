@@ -44,7 +44,7 @@ public class CourseController {
     }
 
     @GetMapping("/search")
-    public Page<Course> searchCourse(@RequestParam("keyword") String keyword, Pageable pageable) {
+    public Page<CourseResponseDto> searchCourse(@RequestParam("keyword") String keyword, Pageable pageable) {
         return courseService.searchCourse(keyword, pageable);
     }
 
