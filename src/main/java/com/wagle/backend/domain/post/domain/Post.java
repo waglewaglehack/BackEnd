@@ -1,5 +1,6 @@
 package com.wagle.backend.domain.post.domain;
 
+import com.wagle.backend.domain.base.BaseEntity;
 import com.wagle.backend.domain.member.domain.Member;
 import com.wagle.backend.domain.post.dto.PostCreateDto;
 import com.wagle.backend.domain.post.dto.PostUpdateDto;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @Entity
-public class Post {
+public class Post extends BaseEntity {
     @Id
     @GeneratedValue
     private Long id;
