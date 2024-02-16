@@ -1,5 +1,6 @@
 package com.wagle.backend.domain.course.domain;
 
+import com.wagle.backend.domain.base.BaseEntity;
 import com.wagle.backend.domain.base.BaseTimeEntity;
 import com.wagle.backend.domain.member.domain.Member;
 import jakarta.persistence.*;
@@ -13,11 +14,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @Entity
-public class Course extends BaseTimeEntity {
+public class Course extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private Long memberId;
 
     @Column(nullable = false)
     private String name;
@@ -25,7 +28,8 @@ public class Course extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    public void updateCourse(String name, String content) {
+        this.name = name;
+        this.content = content;
+    }
 }
