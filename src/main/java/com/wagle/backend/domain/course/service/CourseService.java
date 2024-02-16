@@ -4,6 +4,7 @@ import com.wagle.backend.domain.course.domain.Course;
 import com.wagle.backend.domain.course.domain.CoursePost;
 import com.wagle.backend.domain.course.dto.CourseRequestDto;
 import com.wagle.backend.domain.course.dto.CourseResponseDto;
+import com.wagle.backend.domain.course.dto.CourseStartRequestDto;
 import com.wagle.backend.domain.course.dto.CourseUpdateRequestDto;
 import com.wagle.backend.domain.course.exception.CourseErrorCode;
 import com.wagle.backend.domain.course.exception.CourseException;
@@ -56,6 +57,15 @@ public class CourseService {
                         .collect(Collectors.toList()))
                 .likeCount(courseLikeRepository.countAllByCourseId(id))
                 .build();
+    }
+
+    public List<CourseStartRequestDto> getStartAllCourse() {
+        return courseRepository.findAll().stream()
+                .map(c -> {
+                    Integer likeCount = courseLikeRepository.countAllByCourseId(c.getId());
+                    return new CourseStartRequestDto(c, likeCount);
+                })
+                .collect(Collectors.toList());
     }
 
     public Page<CourseResponseDto> searchCourse(String keyword, Pageable pageable) {

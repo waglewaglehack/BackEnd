@@ -44,6 +44,11 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getCourse(courseId));
     }
 
+    @GetMapping("/all")
+    public List<CourseStartRequestDto> getAllCourse() {
+        return courseService.getStartAllCourse();
+    }
+
     @GetMapping("/search")
     public Page<CourseResponseDto> searchCourse(@RequestParam("keyword") String keyword, @RequestParam(value = "page") Integer page,
                                      @RequestParam(value = "size") Integer size) {
