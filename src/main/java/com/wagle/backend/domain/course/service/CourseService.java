@@ -55,7 +55,7 @@ public class CourseService {
                             return new PostCourseResponseDto(post, nickName);
                         })
                         .collect(Collectors.toList()))
-                .likeCount(courseLikeRepository.countAllByCourseId(id))
+                .like(courseLikeRepository.countAllByCourseId(id))
                 .build();
     }
 
@@ -85,7 +85,7 @@ public class CourseService {
                             return new PostCourseResponseDto(post, nickName);
                         })
                         .collect(Collectors.toList()))
-                .likeCount(courseLikeRepository.countAllByCourseId(course.getId()))
+                .like(courseLikeRepository.countAllByCourseId(course.getId()))
                 .build());
     }
 
