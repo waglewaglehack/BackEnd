@@ -9,7 +9,6 @@ import com.wagle.backend.domain.post.dto.PostsResponseDto;
 import com.wagle.backend.domain.post.service.PostCommentService;
 import com.wagle.backend.domain.post.service.PostLikeService;
 import com.wagle.backend.domain.post.service.PostService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -83,7 +82,7 @@ public class PostController {
     }
 
     /**
-     * [포스트 조건 검색]
+     * Public [포스트 조건 검색]
      *
      * @param keyword
      * @param page
