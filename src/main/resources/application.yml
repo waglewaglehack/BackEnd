@@ -34,7 +34,7 @@ spring:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
             redirect-uri: http://localhost:8080/login/oauth2/code/google
-            scope: # 사용자에게 리소스 서버에서 획득할 수 있는 권한의 범위를 의미
+            scope: # 사용자에게 리소스 서버에서 획득할 수 있는 권한의 범위를
               - email
               - profile
 

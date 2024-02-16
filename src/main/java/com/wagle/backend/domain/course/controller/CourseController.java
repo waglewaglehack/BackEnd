@@ -51,6 +51,7 @@ public class CourseController {
         return courseService.searchCourse(keyword, pageable);
     }
 
+    //121
     @PostMapping()
     public void createCourse(@RequestBody CourseRequestDto requestDto) {
         courseService.saveCourse(requestDto);
