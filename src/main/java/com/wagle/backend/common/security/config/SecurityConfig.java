@@ -8,6 +8,7 @@ import com.wagle.backend.common.security.handler.LoginSuccessHandler;
 import com.wagle.backend.common.security.handler.OAuth2LoginSuccessHandler;
 import com.wagle.backend.common.security.service.JwtService;
 import com.wagle.backend.common.security.service.LoginService;
+import com.wagle.backend.common.security.service.WhiteList;
 import com.wagle.backend.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -38,8 +39,6 @@ public class SecurityConfig {
     private final CorsConfig corsConfig;
     private final DefaultOAuth2UserService defaultOAuth2UserService;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
-    private final String[] permitArr = {"/", "/css/**", "/images/**", "/js/**", "/favicon.ico",
-            "/h2-console/**", "/member/sign-up", "/v3/api-docs/**","/swagger-ui/**" };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -50,7 +49,7 @@ public class SecurityConfig {
         .headers(config -> config.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
         .sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(config ->
-                config.requestMatchers(permitArr).permitAll()
+                config.requestMatchers(WhiteList.WHITE_LIST_ARRAY).permitAll()
                         .anyRequest().hasAuthority("ROLE_USER"))
 
         // 원래 스프링 시큐리티 필터 순서가 LogoutFilter 이후에 로그인 필터 동작

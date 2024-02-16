@@ -11,6 +11,7 @@ import com.wagle.backend.domain.post.service.PostLikeService;
 import com.wagle.backend.domain.post.service.PostService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/post")
+@Slf4j
 public class PostController {
     private final PostService postService;
     private final PostLikeService postLikeService;
@@ -89,9 +91,10 @@ public class PostController {
      * @return
      */
     @GetMapping("/search")
-    public ResponseEntity<SuccessResponse> search(@RequestParam(value = "keyword") String keyword,
+    public ResponseEntity<SuccessResponse> search(@RequestParam(value = "keyword", required = false) String keyword,
                                                   @RequestParam(value = "page", defaultValue = "0") Integer page,
                                                   @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        log.info("PostController.search");
         PageRequest pageRequest = PageRequest.of(page, size);
         return new ResponseEntity<>(SuccessResponse.of(postService.findAll(pageRequest, keyword)), HttpStatus.OK);
     }

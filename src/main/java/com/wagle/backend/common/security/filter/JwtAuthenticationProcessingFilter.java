@@ -3,6 +3,7 @@ package com.wagle.backend.common.security.filter;
 import com.wagle.backend.common.security.service.JwtService;
 import com.wagle.backend.common.security.service.PasswordUtil;
 import com.wagle.backend.common.security.auth.PrincipalDetails;
+import com.wagle.backend.common.security.service.WhiteList;
 import com.wagle.backend.domain.member.domain.Member;
 import com.wagle.backend.domain.member.repository.MemberRepository;
 import jakarta.servlet.FilterChain;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -24,17 +26,17 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
-    private static final String NO_CHECK_URL = "/login"; // "/login"으로 들어오는 요청은 Filter 작동 X
 
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
 
-    private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
+    private static final GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
+    private static final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getRequestURI().equals(NO_CHECK_URL)) {
-            filterChain.doFilter(request, response); // "/login" 요청이 들어오면, 다음 필터 호출
+        if (isPass(request)) {
+            filterChain.doFilter(request, response);
             return; // return으로 이후 현재 필터 진행 막기 (안해주면 아래로 내려가서 계속 필터 진행시킴)
         }
 
@@ -132,7 +134,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             password = PasswordUtil.generateRandomPassword();
         }
         PrincipalDetails principalDetails = new PrincipalDetails(member);
-        log.info("principalDetails={}",principalDetails.getAuthorities());
+        log.info("principalDetails={}", principalDetails.getAuthorities());
 
 //        UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
 //                .username(member.getEmail())
@@ -146,5 +148,15 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         log.info("JwtAuthenticationProcessingFilter.saveAuthentication");
+    }
+
+    private boolean isPass(HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        for (String pattern : WhiteList.WHITE_LIST_ARRAY) {
+            if (pathMatcher.match(pattern, requestURI)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
