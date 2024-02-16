@@ -45,8 +45,10 @@ public class PostService {
     public PostResponseDto findOne(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(NoSuchElementException::new);// 리펙토링 대상
-
-        return null;
+        int count = postLikeRepository.count(post.getId());
+        Member member = memberRepository.findById(post.getMemberId())
+                .orElseThrow(NoSuchElementException::new);
+        return PostResponseDto.of(post, count, member);
     }
 
 
@@ -68,24 +70,18 @@ public class PostService {
         } else {
             postPage = postRepository.findByNameContainingIgnoreCase(pageable, keyword);
         }
-
         // DTO 매핑
-        List<PostResponseDto> postResponseDtos = new ArrayList<>();
-        for (Post post : postPage) {
-            int count = postLikeRepository.count(post.getId());
-            Member member = memberRepository.findById(post.getMemberId())
-                    .orElseThrow(NoSuchElementException::new);
-            postResponseDtos.add(PostResponseDto.of(post, count, member));
-        }
+        return toPostsResponseDto(postPage);
+    }
 
-        int totalPages = postPage.getTotalPages();
-        int currentPage = postPage.getNumber();
-
-        return PostsResponseDto.builder()
-                .posts(postResponseDtos)
-                .totalPages(totalPages)
-                .currentPage(currentPage)
-                .build();
+    /**
+     * [맴버의 포스트 가져오기]
+     * @param pageable
+     * @param memberId
+     * @return
+     */
+    public PostsResponseDto findByMemberId(Pageable pageable, Long memberId) {
+        return toPostsResponseDto(postRepository.findByMemberId(pageable, memberId));
     }
 
     /**
@@ -118,5 +114,24 @@ public class PostService {
             postLike = PostLike.ofPostLike(memberId, postId);
             postLikeRepository.save(postLike);
         }
+    }
+
+    private PostsResponseDto toPostsResponseDto(Page<Post> postPage) {
+        List<PostResponseDto> postResponseDtos = new ArrayList<>();
+        for (Post post : postPage) {
+            int count = postLikeRepository.count(post.getId());
+            Member member = memberRepository.findById(post.getMemberId())
+                    .orElseThrow(NoSuchElementException::new);
+            postResponseDtos.add(PostResponseDto.of(post, count, member));
+        }
+
+        int totalPages = postPage.getTotalPages();
+        int currentPage = postPage.getNumber();
+
+        return PostsResponseDto.builder()
+                .posts(postResponseDtos)
+                .totalPages(totalPages)
+                .currentPage(currentPage)
+                .build();
     }
 }
