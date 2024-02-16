@@ -1,53 +1,81 @@
-insert into member(member_id, emoji, nickname) values(100, '\\u{1f601}', 'dummy');
-insert into post(id,
-                 member_id,
-                 name,
-                 content,
-                 latitude,
-                 longitude) values(100, 100, 'title1', '사랑해요', 36,36);
-insert into post(id,
-                 member_id,
-                 name,
-                 content,
-                 latitude,
-                 longitude) values(200, 100, 'title2', '사랑해요2', 36,36);
-insert into post(id,
-                 member_id,
-                 name,
-                 content,
-                 latitude,
-                 longitude) values(300, 100, 'title2', '사랑해요3', 36,36);
-insert into post_comment(id,
-                         post_id,
-                         member_id,
-                         comment) values(100,100,100,'사랑해요사랑해요');
-insert into post_comment(id,
-                         post_id,
-                         member_id,
-                         comment) values(200,100,100,'완전 사랑해요');
-insert into post_comment(id,
-                         post_id,
-                         member_id,
-                         comment) values(300,100,100,'완전완전 사랑해요');
-insert into course(id,
-                   member_id,
-                   name,
-                   content) values(100,100,'costtitle1', 'content1');
-insert into course(id,
-                   member_id,
-                   name,
-                   content) values(200,100,'costtitle2', 'content2');
-insert into course(id,
-                   member_id,
-                   name,
-                   content) values(300,100,'costtitle3', 'content3');
+-- Member 테이블 데이터 삽입
+INSERT INTO member(member_id, emoji, nickname) 
+VALUES 
+(100, '\\u{1f601}', '오지훈'),
+(200, '\uD83D\uDE01', '노유성'),
+(300, '\\u{1f601}', '문희상'),
+(400, '\\u{1f601}', '김진표'),
+(500, '\\u{1f601}', '임명우');
 
-insert into course_post(id,
-                        course_id,
-                        post_id) values(100,100,100);
-insert into course_post(id,
-                        course_id,
-                        post_id) values(200,100,200);
-insert into course_post(id,
-                        course_id,
-                        post_id) values(300,100,300);
+-- Post 테이블 데이터 삽입
+INSERT INTO post(id, member_id, name, content, latitude, longitude) 
+VALUES 
+(1001, 100, '가천대학교 어딘가에서', '와글와글 헤커톤 참가하기 아이 재밌어 >.<', 36, 36),
+(1002, 300, '가천대학교 운동장', '여름에 한마페가서 놀면 학점은 놓쳐도 재미는 잡을 수 있어요', 36, 36),
+(1003, 400, '광장 시장', '창신 육회 먹고 청계천 산책하면 없던 썸도 생김 ㄷㄷ', 36, 36),
+(1004, 200, '혜화역', '혜화역에서 요즘 연극 재밌는 거 많이 하더라구요', 36, 36),
+(1005, 500, '눈오는날 에버랜드 가기', '애인이랑 추워서 붙어있을 수밖에 없다 와우', 36, 36),
+(1006, 500, '에버랜드 가서', '회오리 감자 먹으면서 장미 공원 보러 가면 재밌습니다. 8월에 가면 좋아요', 36, 36);
+
+-- Post_comment 테이블 데이터 삽입
+INSERT INTO post_comment(id, post_id, member_id, comment) 
+VALUES 
+(1000, 1001, 100, 'ㄹㅇ 와글톤 개꿀잼임 나도 저번에 갔는데 완전 재밌었음'),
+(1001, 1001, 200, '밤새는거 좀 빡세긴한데 음료수 무한제공이라서 재밌음. 비밀인데 나 포카리 한 30개먹음ㅋㅋ'),
+(1002, 1001, 300, '플러터 같이 할 사람~'),
+(1003, 1001, 400, '플러터 같이 할 사람~'),
+(1004, 1001, 500, '플러터 같이 할 사람~'),
+(1005, 1002, 100, '12학번에 한마페 가려고 하는 사람 있더라;; 좀 그렇지 않아? '),
+(1006, 1002, 200, '형님 눈치 안 보고 한마페 가셔도 됩니다.'),
+(1007, 1002, 100, 'ㅎㅎ 고마워 잘 놀고 올게!'),
+(1008, 1003, 200, '거기 육회 맛있음. 매화수도 슬러시로 파는데 술이 술술 들어가더라.'),
+(1009, 1003, 300, '배고파'),
+(1010, 1004, 100, '연극 추천좀 해줘'),
+(1011, 1005, 400, '애인이 있는지 물어보는게 먼저 예의 아니냐??'),
+(1012, 1005, 500, '플러터 같이 할 사람~'),
+(1013, 1006, 500, '감사합니다.'),
+(1014, 1006, 100, '감사합니다람쥐');
+
+
+-- Course 테이블 데이터 삽입
+INSERT INTO course(id, member_id, name, content) 
+VALUES 
+(1000, 400, '세상에 다시는 없을 가천대생을 위한 꿀팁!', '여름에 열리는 한마페는 필수입니다..! 그리고 멋진 팀원들과 환상적인 어플을 만드는 와글와글 해커톤에 꼭 참여하세요~'),
+(1001, 200, '종로에서 재밌게 놀기', ''),
+(1002, 100, '[에버랜드] 가장 효율적인 동선', '가장 먼저 티익스프레스로 뛰어갑니다! 티익스프레스의 대기시간은 갈수록 길어지거든요 ㅎㅎ. 그리고 나서 아마존 익스프레스로 시원하게 한번 적시고 더블 락스핀으로 ㄱㄱ');
+
+-- Course_post 테이블 데이터 삽입
+INSERT INTO course_post(id, course_id, post_id) 
+VALUES 
+(1000, 100, 1001),
+(1001, 100, 1002),
+(1002, 200, 1003),
+(1003, 200, 1004),
+(1004, 300, 1005),
+(1005, 300, 1006);
+
+INSERT INTO post_like(id, member_id, post_id)
+values
+(1000,100, 1000),
+(1001,200, 1000),
+(1002,300, 1000),
+(1003,400, 1000),
+(1004,500, 1000),
+(1005,100, 1001),
+(1006,200, 1001),
+(1007,300, 1001),
+(1008,400, 1001);
+
+insert into course_like(id, member_id, course_id)
+values
+(1000, 100, 1000),
+(1001, 200, 1000),
+(1002, 300, 1000),
+(1003, 400, 1000),
+(1004, 500, 1000),
+(1005, 100, 1001),
+(1006, 200, 1001),
+(1007, 300, 1001),
+(1008, 400, 1001);
+
+
