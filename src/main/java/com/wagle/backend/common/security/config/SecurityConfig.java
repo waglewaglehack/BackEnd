@@ -17,6 +17,8 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -36,26 +38,28 @@ public class SecurityConfig {
     private final CorsConfig corsConfig;
     private final DefaultOAuth2UserService defaultOAuth2UserService;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final String[] permitArr = {"/", "/css/**", "/images/**", "/js/**", "/favicon.ico",
+            "/h2-console/**", "/member/sign-up", "/v3/api-docs/**","/swagger-ui/**" };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.formLogin(config -> config.disable());
-        http.httpBasic(config -> config.disable());
-        http.csrf(config -> config.disable());
-        http.cors(config -> config.disable());
-        http.headers(config -> config.frameOptions(config2 -> config2.disable()));
-        http.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http.authorizeHttpRequests(config ->
-                config.requestMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**", "/member/sign-up").permitAll()
-                        .anyRequest().hasAuthority("ROLE_USER"));
+        http.formLogin(AbstractHttpConfigurer::disable)
+        .httpBasic(AbstractHttpConfigurer::disable)
+        .csrf(AbstractHttpConfigurer::disable)
+        .cors(AbstractHttpConfigurer::disable)
+        .headers(config -> config.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+        .sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(config ->
+                config.requestMatchers(permitArr).permitAll()
+                        .anyRequest().hasAuthority("ROLE_USER"))
 
         // 원래 스프링 시큐리티 필터 순서가 LogoutFilter 이후에 로그인 필터 동작
         // 따라서, LogoutFilter 이후에 우리가 만든 필터 동작하도록 설정
         // 순서 : LogoutFilter -> JwtAuthenticationProcessingFilter -> CustomJsonUsernamePasswordAuthenticationFilter
-        http.addFilter(corsConfig.corsFilter());
-        http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
-        http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
-        http.oauth2Login(config -> {
+        .addFilter(corsConfig.corsFilter())
+        .addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class)
+        .addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class)
+        .oauth2Login(config -> {
             config.defaultSuccessUrl("/");
             config.successHandler(oAuth2LoginSuccessHandler);
             config.userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(defaultOAuth2UserService));
