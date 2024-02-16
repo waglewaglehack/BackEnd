@@ -1,20 +1,16 @@
 package com.wagle.backend.domain.course.service;
 
 import com.wagle.backend.domain.course.domain.Course;
-import com.wagle.backend.domain.course.domain.CourseLike;
 import com.wagle.backend.domain.course.domain.CoursePost;
 import com.wagle.backend.domain.course.dto.CourseRequestDto;
 import com.wagle.backend.domain.course.dto.CourseResponseDto;
 import com.wagle.backend.domain.course.dto.CourseUpdateRequestDto;
 import com.wagle.backend.domain.course.exception.CourseErrorCode;
 import com.wagle.backend.domain.course.exception.CourseException;
-import com.wagle.backend.domain.course.repository.CourseLikeRepository;
 import com.wagle.backend.domain.course.repository.CoursePostRepository;
 import com.wagle.backend.domain.course.repository.CourseRepository;
 import com.wagle.backend.domain.member.repository.MemberRepository;
-import com.wagle.backend.domain.post.domain.PostLike;
 import com.wagle.backend.domain.post.dto.PostCourseResponseDto;
-import com.wagle.backend.domain.post.dto.PostResponseDto;
 import com.wagle.backend.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -95,4 +92,13 @@ public class CourseService {
         coursePostRepository.deleteByCourseId(id);
     }
 
+    @Transactional(readOnly = true)
+    public List<Course> getCourseAll() {
+        return courseRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Course> getCourseByMemberId(Long memberId) {
+        return courseRepository.findByMemberId(memberId);
+    }
 }

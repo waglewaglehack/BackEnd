@@ -1,6 +1,6 @@
 package com.wagle.backend.domain.course.domain;
 
-import com.wagle.backend.domain.post.domain.Post;
+import com.wagle.backend.domain.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,12 +12,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @Entity
-public class CoursePost {
+public class CourseComment extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private Long writerId;
+
+    @Column(nullable = false)
     private Long courseId;
 
-    private Long postId;
+    @Column(nullable = false)
+    private String comment;
 }
