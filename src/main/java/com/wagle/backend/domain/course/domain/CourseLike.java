@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Builder
-public class CourseLike extends BaseEntity {
+public class CourseLike {
     @Id
     @GeneratedValue
     private Long id;
