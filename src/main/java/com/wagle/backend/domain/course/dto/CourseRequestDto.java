@@ -1,4 +1,6 @@
 package com.wagle.backend.domain.course.dto;
 
-public record CourseRequestDto(Long memberId, String name, String content) {
+import java.util.List;
+
+public record CourseRequestDto(Long memberId, String name, String content, List<Long> postIds) {
 }

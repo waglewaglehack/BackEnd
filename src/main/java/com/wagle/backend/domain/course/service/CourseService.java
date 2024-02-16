@@ -69,12 +69,14 @@ public class CourseService {
 
         Course savedCourse = courseRepository.save(course);
 
-        CoursePost coursePost = CoursePost.builder()
-                .courseId(savedCourse.getId())
-                .postId(requestDto.memberId())
-                .build();
+        for (Long postId : requestDto.postIds()) {
+            CoursePost coursePost = CoursePost.builder()
+                    .courseId(savedCourse.getId())
+                    .postId(postId)
+                    .build();
 
-        coursePostRepository.save(coursePost);
+            coursePostRepository.save(coursePost);
+        }
     }
 
     @Transactional
