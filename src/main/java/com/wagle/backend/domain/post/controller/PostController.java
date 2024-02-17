@@ -16,6 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -57,7 +60,6 @@ public class PostController {
     /**
      * [포스트 수정]
      *
-     * @param member
      * @param postUpdateDto
      * @return
      */
@@ -72,16 +74,16 @@ public class PostController {
     /**
      * [포스트 저장]
      *
-     * @param member
      * @param postCreateDto
      * @return
      */
     @PostMapping
     public ResponseEntity<SuccessResponse> save(
-            @RequestBody PostCreateDto postCreateDto) {
+            @RequestBody PostCreateDto postCreateDto,
+    @RequestBody List<MultipartFile> multipartFiles) {
         Member member = Member.dummy();
         postCreateDto.setMemberId(member.getId());
-        return new ResponseEntity<>(SuccessResponse.of(postService.addPost(postCreateDto)), HttpStatus.OK);
+        return new ResponseEntity<>(SuccessResponse.of(postService.addPost(postCreateDto, multipartFiles)), HttpStatus.OK);
     }
 
     /**
