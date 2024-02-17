@@ -16,6 +16,8 @@ public class PostResponseDto {
     private int likeCount;
     private String nickname;
     private String emoji;
+    private Double latitude;
+    private Double longitude;
 
     public static PostResponseDto of(Post post, int likeCount, Member member) {
         return PostResponseDto.builder()
@@ -25,6 +27,8 @@ public class PostResponseDto {
                 .likeCount(likeCount)
                 .nickname(member.getNickname())
                 .emoji(member.getEmoji())
+                .latitude(post.getLatitude())
+                .longitude(post.getLongitude())
                 .build();
     }
 }
