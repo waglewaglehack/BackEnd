@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class PostService {
 
 
     @Transactional
-    public boolean addPost(PostCreateDto postCreateDto) { // true이거나 exception 이니까 그냥 true로 한다.
+    public boolean addPost(PostCreateDto postCreateDto, List<MultipartFile> multipartFiles) { // true이거나 exception 이니까 그냥 true로 한다.
         Post post = Post.ofPost(postCreateDto);
         postRepository.save(post);
         return true;
