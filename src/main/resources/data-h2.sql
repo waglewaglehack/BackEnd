@@ -1,11 +1,11 @@
 -- Member 테이블 데이터 삽입
 INSERT INTO member(member_id, emoji, nickname) 
 VALUES 
-(100, "\uD83D\uDE01", '오지훈'),
-(200, "\uD83D\uDC00", '노유성'),
-(300, "\uD83D\uDE01", '문희상'),
-(400, "\uD83D\uDE01", '김진표'),
-(500, "\uD83D\uDE01", '임명우');
+(100, '\uD83D\uDE01', '오지훈'),
+(200, '\uD83D\uDC00', '노유성'),
+(300, '\uD83D\uDE01', '문희상'),
+(400, '\uD83D\uDE01', '김진표'),
+(500, '\uD83D\uDE01', '임명우');
 
 -- Post 테이블 데이터 삽입
 INSERT INTO post(id, member_id, name, content, latitude, longitude) 
