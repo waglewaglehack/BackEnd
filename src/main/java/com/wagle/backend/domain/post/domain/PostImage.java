@@ -20,9 +20,9 @@ public class PostImage {
     private Long memberId;
     private String savedFilename;
 
-    public static PostImage of(Member member, String saveFilename) {
+    public static PostImage of(Long memberId, String saveFilename) {
         return PostImage.builder()
-                .memberId(member.getId())
+                .memberId(memberId)
                 .savedFilename(saveFilename)
                 .build();
     }

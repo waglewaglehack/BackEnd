@@ -1,11 +1,14 @@
 package com.wagle.backend.domain.post.service;
 
+import com.wagle.backend.common.util.FileUtils;
 import com.wagle.backend.domain.member.domain.Member;
 import com.wagle.backend.domain.member.repository.MemberRepository;
 import com.wagle.backend.domain.post.domain.Post;
+import com.wagle.backend.domain.post.domain.PostImage;
 import com.wagle.backend.domain.post.domain.PostLike;
 import com.wagle.backend.domain.post.dto.*;
 import com.wagle.backend.domain.post.repository.PostCommentRepository;
+import com.wagle.backend.domain.post.repository.PostImageRepository;
 import com.wagle.backend.domain.post.repository.PostLikeRepository;
 import com.wagle.backend.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +28,20 @@ import java.util.NoSuchElementException;
 public class PostService {
     private final PostRepository postRepository;
     private final PostLikeRepository postLikeRepository;
-
     private final MemberRepository memberRepository;
-
+    private final PostImageRepository postImageRepository;
+    private final FileUtils fileUtils;
 
     @Transactional
     public boolean addPost(PostCreateDto postCreateDto, List<MultipartFile> multipartFiles) { // true이거나 exception 이니까 그냥 true로 한다.
         Post post = Post.ofPost(postCreateDto);
         postRepository.save(post);
+        for (MultipartFile multipartFile : multipartFiles) {
+            String savedFilename = fileUtils.createSavedFilename(multipartFile.getOriginalFilename());
+            PostImage postImage = PostImage.of(postCreateDto.getMemberId(), savedFilename);
+            postImageRepository.save(postImage);
+            fileUtils.storeFile(multipartFile, savedFilename);
+        }
         return true;
     }
 
