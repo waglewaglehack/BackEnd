@@ -5,9 +5,10 @@ import com.wagle.backend.domain.member.domain.Member;
 import com.wagle.backend.domain.member.repository.MemberRepository;
 import com.wagle.backend.domain.post.domain.Post;
 import com.wagle.backend.domain.post.domain.PostImage;
-import com.wagle.backend.domain.post.domain.PostLike;
-import com.wagle.backend.domain.post.dto.*;
-import com.wagle.backend.domain.post.repository.PostCommentRepository;
+import com.wagle.backend.domain.post.dto.PostCreateDto;
+import com.wagle.backend.domain.post.dto.PostResponseDto;
+import com.wagle.backend.domain.post.dto.PostUpdateDto;
+import com.wagle.backend.domain.post.dto.PostsResponseDto;
 import com.wagle.backend.domain.post.repository.PostImageRepository;
 import com.wagle.backend.domain.post.repository.PostLikeRepository;
 import com.wagle.backend.domain.post.repository.PostRepository;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.channels.MulticastChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -32,6 +32,7 @@ public class PostService {
     private final PostImageRepository postImageRepository;
     private final FileUtils fileUtils;
 
+    // TODO 이미지 저장도 하고 싶어요
     @Transactional
     public boolean addPost(PostCreateDto postCreateDto, List<MultipartFile> multipartFiles) { // true이거나 exception 이니까 그냥 true로 한다.
         Post post = Post.ofPost(postCreateDto);
