@@ -110,9 +110,9 @@ public class PostController {
      * @param postId
      * @return
      */
-    @PostMapping("/like")
+    @PostMapping("/{postId}/like")
     public ResponseEntity<SuccessResponse> likePost(
-            @RequestParam("post_id") Long postId) {
+            @PathVariable("postId") Long postId) {
         Member member = Member.dummy();
         return new ResponseEntity<>(SuccessResponse.of(postLikeService.likePost(member.getId(), postId)), HttpStatus.OK);
     }
