@@ -56,5 +56,9 @@ jwt:
     header: Authorization-refresh
 
 
-
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
 

@@ -80,7 +80,7 @@ public class PostController {
     @PostMapping
     public ResponseEntity<SuccessResponse> save(
             @RequestBody PostCreateDto postCreateDto,
-    @RequestBody List<MultipartFile> multipartFiles) {
+    @RequestBody(required = false) List<MultipartFile> multipartFiles) {
         Member member = Member.dummy();
         postCreateDto.setMemberId(member.getId());
         return new ResponseEntity<>(SuccessResponse.of(postService.addPost(postCreateDto, multipartFiles)), HttpStatus.OK);
